@@ -1,7 +1,6 @@
 
 // @51.941496,-122.1828913,6z -- Canadian national parks and preserves
 
-//use model view vm paradigm here
 
 var map;
 
@@ -22,20 +21,55 @@ var parks = [
 // callback func
 function initMap() {
 
-var self = this;
-this.filter = ko.observable("");
-this.list = ko.observableArray([]);
+  var self = this;
+  this.filter = ko.observable("");
+  this.list = ko.observableArray([]);
 
-map = new google.maps.Map(document.getElementById('map'), {
-  zoom: 6,
-  center: {lat: 51.941496, lng: -122.1828913},
-  mapTypeId: 'satellite'
-});
-// make infoWindows, markers, and eventlisteners w. animation
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 6,
+    center: {lat: 51.941496, lng: -122.1828913},
+    mapTypeId: 'satellite'
+  });
 
-// add wikipedia links (w. jsonp iirc)
+  // make infoWindows, markers, and eventlisteners w. animation
+  var markers = [];
+  var largeInfowindow = new google.maps.InfoWindow();
+  var defaultIcon = makeMarkerIcon('purple');
+  var highlightedIcon = makeMarkerIcon('pink');
+
+  for (var i = 0; i < parks.length; i++) {
+    var position = parks[i].location;
+    var name = parks[i].name;
+    var marker = new google.maps.Marker({
+      position: position,
+      title: name,
+      animation: google.maps.Animation.BOUNCE???,
+      icon: defaultIcon
+    });
+
+    markers.push(marker);
+    marker.addListener('click', function() {
+      populateInfoWindow(this, largeInfowindow);
+    });
+    marker.addListener('mouseover', function() {
+      this.setIcon(highlightedIcon);
+    });
+    marker.addListener('mouseout', function() {
+      this.setIcon(defaultIcon);
+    });
+  }
+
 
 
 // add filter functionality
 // apply bindings
 }
+
+function populateInfoWindow(marker, infowindow) {
+// add wikipedia links (w. jsonp iirc)
+
+};
+
+function makeMarkerIcon(markerColor) {
+
+};
